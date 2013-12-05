@@ -2,6 +2,12 @@
 
 (define __version__ "0.1")
 
+(define Ident1 1)
+(define Ident2 2)
+(define Ident3 3)
+(define Ident4 4)
+(define Ident5 5)
+
 (define Proc5
   (lambda ()
     '()
@@ -64,6 +70,17 @@
         (number->string loops) " passes = " (number->string (car result)) "\n"
         "This machine benchmarks at " (number->string (cdr result)) " pystones/second\n"
       ))
+    )
+  )
+)
+
+(define Func1
+  (lambda (CharPar1 CharPar2)
+    (let ((CharLoc1 CharPar1) (CharLoc2 CharPar2))
+      (if (not (char=? CharLoc1 CharLoc2))
+		Ident1
+		Ident2
+      )
     )
   )
 )
