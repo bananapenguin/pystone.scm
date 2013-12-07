@@ -43,6 +43,27 @@
   )
 )
 
+(define Proc8
+  (lambda (Array1Par Array2Par IntParI1 IntParI2)
+    (let ((IntLoc (+ IntParI1 5)))
+      (vector-set! Array1Par IntLoc IntParI2)
+      (vector-set! Array1Par (+ IntLoc 1) (vector-ref Array1Par IntLoc))
+      (vector-set! Array1Par (+ IntLoc 30) IntLoc)
+      (let loop ((IntIndex IntLoc))
+        (if (< IntIndex (+ IntLoc 2))
+          (begin
+            (vector-set! (vector-ref Array2Par IntLoc) IntIndex IntLoc)
+            (loop (+ IntIndex 1))
+          )
+        )
+      )
+      (vector-set! (vector-ref Array2Par IntLoc) (- IntLoc 1) (+ (vector-ref (vector-ref Array2Par IntLoc) (- IntLoc 1)) 1))
+      (vector-set! (vector-ref Array2Par (+ IntLoc 20)) IntLoc (vector-ref Array1Par IntLoc))
+      (set! IntGlob 5)
+    )
+  )
+)
+
 (define Proc5
   (lambda ()
     '()
