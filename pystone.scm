@@ -1,4 +1,5 @@
 (require 'unix)
+(require 'record)
 
 (define __version__ "0.1")
 
@@ -7,6 +8,28 @@
 (define Ident3 3)
 (define Ident4 4)
 (define Ident5 5)
+
+(define Record (make-record-type 'record '(PtrComp Discr EnumComp IntComp StringComp)))
+(define create-Record (record-constructor Record))
+(define Record-PtrComp (record-accessor Record 'PtrComp))
+(define Record-Discr (record-accessor Record 'Discr))
+(define Record-EnumComp (record-accessor Record 'EnumComp))
+(define Record-IntComp (record-accessor Record 'IntComp))
+(define Record-StringComp (record-accessor Record 'StringComp))
+(define set-Record-PtrComp! (record-modifier Record 'PtrComp))
+(define set-Record-Discr! (record-modifier Record 'Discr))
+(define set-Record-EnumComp! (record-modifier Record 'EnumComp))
+(define set-Record-IntComp! (record-modifier Record 'IntComp))
+(define set-Record-StringComp! (record-modifier Record 'StringComp))
+
+(define IntGlob 0)
+(define BoolGlob #f)
+(define Char1Glob #\000)
+(define Char2Glob #\000)
+(define Arrary1Glob (make-vector 51 0))
+(define Arrary2Glob (make-vector 51 (make-vector 51 0)))
+(define PtrGlb '())
+(define PtrGlbNext '())
 
 (define Proc5
   (lambda ()
@@ -132,5 +155,3 @@
 )
 
 (main 500)
-(print (Func2 "ZZASDFG" "QW@#E"))
-
