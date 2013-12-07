@@ -78,11 +78,59 @@
   (lambda (CharPar1 CharPar2)
     (let ((CharLoc1 CharPar1) (CharLoc2 CharPar2))
       (if (not (char=? CharLoc1 CharLoc2))
-		Ident1
-		Ident2
+        Ident1
+        Ident2
+      )
+    )
+  )
+)
+
+(define Func2
+  (lambda (StrParI1 StrParI2)
+    (let ((IntLoc 1) (CharLoc))
+      (let loop ()
+        (if (<= IntLoc 1)
+          (begin
+            (if (= (Func1 (string-ref StrParI1 IntLoc) (string-ref StrParI2 (+ IntLoc 1))) Ident1)
+              (begin
+                (set! CharLoc #\A)
+                (set! IntLoc (+ IntLoc 1))
+              )
+            )
+            (loop)
+          )
+        )
+      )
+      (if (and (char>=? CharLoc #\W) (char<=? CharLoc #\Z))
+        (!set IntLoc 7)
+      )
+      (if (char=? CharLoc #\X)
+        #t
+        (begin
+          (if (string>? StrParI1 StrParI2)
+            (begin
+              (set! IntLoc (+ IntLoc 7))
+              #t
+            )
+            #f
+          )
+        )
+      )
+    )
+  )
+)
+
+(define Func3
+  (lambda (EnumParIn)
+    (let ((EnumLoc EnumParIn))
+      (if (= EnumLoc Ident3)
+        #t
+        #f
       )
     )
   )
 )
 
 (main 500)
+(print (Func2 "ZZASDFG" "QW@#E"))
+
