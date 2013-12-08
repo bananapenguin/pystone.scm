@@ -63,13 +63,13 @@
 (define Proc0
   (lambda (loops)
     (let ((starttime) (nulltime) (benchtime) (loopsPerBenchtime) (String1Loc))
-      (set! starttime (unix-time))
+      (set! starttime (nanotime-nanoseconds (unix-nanotime)))
       (let loop ((i loops))
         (if (> i 1)
           (loop (- i 1))
         )
       )
-      (set! nulltime (- (unix-time) starttime))
+      (set! nulltime (- (nanotime-nanoseconds (unix-nanotime)) starttime))
 
       (set! PtrGlbNext (create-Record '() 0 0 0 0))
       (set! PtrGlb (create-Record '() 0 0 0 0))
@@ -81,7 +81,7 @@
       (set! String1Loc "DHRYSTONE PROGRAM, 1'ST STRING")
       (vector-set! (vector-ref Array2Glob 8) 7 10)
 
-      (set! starttime (unix-time))
+      (set! starttime (nanotime-nanoseconds (unix-nanotime)))
       (let loop ((i loops))
         (if (> i 1)
           (let ((IntLoc1 2) (IntLoc2 3) (IntLoc3) (CharIndex)
@@ -121,7 +121,7 @@
         )
       )
 
-      (set! benchtime (- (- (unix-time) starttime) nulltime))
+      (set! benchtime (/ (- (- (nanotime-nanoseconds (unix-nanotime)) starttime) nulltime) (pow 10 9)))
 
       (if (= benchtime 0)
         (set! loopsPerBenchtime 0)
