@@ -65,6 +65,17 @@
   )
 )
 
+(define Proc3
+  (lambda (PtrParOut)
+    (if (not (eq? PtrGlb '()))
+      (set! PtrParOut (Record-PtrComp PtrGlb))
+      (set! IntGlob 100)
+    )
+    (set-Record-IntComp! PtrGlb (Proc7 10 IntGlob))
+    PtrParOut
+  )
+)
+
 (define Proc7
   (lambda (IntParI1 IntParI2)
     (let ((IntLoc (+ IntParI1 2)) (IntParOut))
