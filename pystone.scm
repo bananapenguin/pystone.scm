@@ -76,6 +76,24 @@
   )
 )
 
+(define Proc6
+  (lambda (EnumParIn)
+    (let ((EnumParOut EnumParIn))
+      (if (not (Func3 EnumParIn))
+        (set! EnumParOut Ident4)
+      )
+      (cond
+        ((= EnumParIn Ident1) (set! EnumParOut Ident1))
+        ((= EnumParIn Ident2) (if (> IntGlob 100) (set! EnumParOut Ident1) (set! EnumParOut Ident4)))
+        ((= EnumParIn Ident3) (set! EnumParOut Ident2))
+        ((= EnumParIn Ident4) '())
+        ((= EnumParIn Ident5) (set! EnumParOut Ident3))
+      )
+      EnumParOut
+    )
+  )
+)
+
 (define Proc7
   (lambda (IntParI1 IntParI2)
     (let ((IntLoc (+ IntParI1 2)) (IntParOut))
@@ -163,11 +181,11 @@
             (Proc8 Array1Glob Array2Glob IntLoc1 IntLoc3)
             (set! PtrGlb (Proc1 PtrGlb))
             (set! CharIndex #\A)
-            (let loop3
+            (let loop3 ()
               (if (char<=? CharIndex Char2Glob)
                 (begin
                   (if (= EnumLoc (Func1 CharIndex #\C))
-                    (set! EnumLoc (proc6 Ident1))
+                    (set! EnumLoc (Proc6 Ident1))
                   )
                   (set! CharIndex (integer->char (+ (char->integer CharIndex) 1)))
                   (loop3)
