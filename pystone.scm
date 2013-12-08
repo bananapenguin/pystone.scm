@@ -42,124 +42,21 @@
 (define PtrGlb '())
 (define PtrGlbNext '())
 
-(define Proc1
-  (lambda (PtrParIn)
-    (let ((NextRecord (copy-Record PtrParIn)))
-      (set-Record-PtrComp! PtrParIn NextRecord)
-      (set-Record-IntComp! PtrParIn 5)
-      (set-Record-IntComp! NextRecord (Record-IntComp PtrParIn))
-      (set-Record-PtrComp! NextRecord (Record-PtrComp PtrParIn))
-      (set-Record-PtrComp! NextRecord (Proc3 (Record-PtrComp NextRecord)))
-      (if (= (Record-Discr NextRecord) Ident1)
-        (begin
-          (set-Record-IntComp! NextRecord 6)
-          (set-Record-EnumComp! NextRecord (Proc6 (Record-EnumComp PtrParIn)))
-          (set-Record-PtrComp! NextRecord (Record-PtrComp PtrGlb))
-          (set-Record-IntComp! NextRecord (Proc7 (Record-IntComp NextRecord) 10))
-        )
-        (set! PtrParIn (copy-Record NextRecord))
-      )
-      (set-Record-PtrComp! NextRecord '())
-      PtrParIn
+(define main
+  (lambda (loops)
+    (let ((result (pystones loops)))
+      (display (string-append
+        "Pystone.scm(" __version__ ") time for "
+        (number->string loops) " passes = " (number->string (car result)) "\n"
+        "This machine benchmarks at " (number->string (cdr result)) " pystones/second\n"
+      ))
     )
   )
 )
 
-(define Proc2
-  (lambda (IntParIO)
-    (let ((IntLoc (+ IntParIO 10)) (EnumLoc 0))
-      (let loop ()
-        (if (char=? Char1Glob #\A)
-          (begin
-            (set! IntLoc (- IntLoc 1))
-            (set! IntParIO (- IntLoc IntGlob))
-            (set! EnumLoc Ident1)
-          )
-        )
-        (if (not (= EnumLoc Ident1))
-          (loop)
-        )
-      )
-      IntParIO
-    )
-  )
-)
-
-(define Proc3
-  (lambda (PtrParOut)
-    (if (not (eq? PtrGlb '()))
-      (set! PtrParOut (Record-PtrComp PtrGlb))
-      (set! IntGlob 100)
-    )
-    (set-Record-IntComp! PtrGlb (Proc7 10 IntGlob))
-    PtrParOut
-  )
-)
-
-(define Proc6
-  (lambda (EnumParIn)
-    (let ((EnumParOut EnumParIn))
-      (if (not (Func3 EnumParIn))
-        (set! EnumParOut Ident4)
-      )
-      (cond
-        ((= EnumParIn Ident1) (set! EnumParOut Ident1))
-        ((= EnumParIn Ident2) (if (> IntGlob 100) (set! EnumParOut Ident1) (set! EnumParOut Ident4)))
-        ((= EnumParIn Ident3) (set! EnumParOut Ident2))
-        ((= EnumParIn Ident4) '())
-        ((= EnumParIn Ident5) (set! EnumParOut Ident3))
-      )
-      EnumParOut
-    )
-  )
-)
-
-(define Proc7
-  (lambda (IntParI1 IntParI2)
-    (let ((IntLoc (+ IntParI1 2)) (IntParOut))
-      (set! IntParOut (+ IntParI2 IntLoc))
-      (print IntParI1)
-      (print IntParI2)
-      (print "")
-      IntParOut
-    )
-  )
-)
-
-(define Proc8
-  (lambda (Array1Par Array2Par IntParI1 IntParI2)
-    (let ((IntLoc (+ IntParI1 5)))
-      (vector-set! Array1Par IntLoc IntParI2)
-      (vector-set! Array1Par (+ IntLoc 1) (vector-ref Array1Par IntLoc))
-      (vector-set! Array1Par (+ IntLoc 30) IntLoc)
-      (let loop ((IntIndex IntLoc))
-        (if (< IntIndex (+ IntLoc 2))
-          (begin
-            (vector-set! (vector-ref Array2Par IntLoc) IntIndex IntLoc)
-            (loop (+ IntIndex 1))
-          )
-        )
-      )
-      (vector-set! (vector-ref Array2Par IntLoc) (- IntLoc 1) (+ (vector-ref (vector-ref Array2Par IntLoc) (- IntLoc 1)) 1))
-      (vector-set! (vector-ref Array2Par (+ IntLoc 20)) IntLoc (vector-ref Array1Par IntLoc))
-      (set! IntGlob 5)
-    )
-  )
-)
-
-(define Proc5
-  (lambda ()
-    (set! Char1Glob #\A)
-    (set! BoolGlob #f)
-  )
-)
-
-(define Proc4
-  (lambda ()
-    (let ((BoolLoc (char=? Char1Glob #\A)))
-      (set! BoolLoc (or BoolLoc BoolGlob))
-      (set! Char2Glob #\B)
-    )
+(define pystones
+  (lambda (loops)
+    (Proc0 loops)
   )
 )
 
@@ -218,9 +115,7 @@
             )
             (set! IntLoc3 (* IntLoc2 IntLoc1))
             (set! IntLoc2 (/ IntLoc3 IntLoc1))
-            (print "hello")
             (set! IntLoc1 (Proc2 IntLoc1))
-            (print "hello")
             (loop (- i 1))
           )
         )
@@ -238,20 +133,121 @@
   )
 )
 
-(define pystones
-  (lambda (loops)
-    (Proc0 loops)
+(define Proc1
+  (lambda (PtrParIn)
+    (let ((NextRecord (copy-Record PtrParIn)))
+      (set-Record-PtrComp! PtrParIn NextRecord)
+      (set-Record-IntComp! PtrParIn 5)
+      (set-Record-IntComp! NextRecord (Record-IntComp PtrParIn))
+      (set-Record-PtrComp! NextRecord (Record-PtrComp PtrParIn))
+      (set-Record-PtrComp! NextRecord (Proc3 (Record-PtrComp NextRecord)))
+      (if (= (Record-Discr NextRecord) Ident1)
+        (begin
+          (set-Record-IntComp! NextRecord 6)
+          (set-Record-EnumComp! NextRecord (Proc6 (Record-EnumComp PtrParIn)))
+          (set-Record-PtrComp! NextRecord (Record-PtrComp PtrGlb))
+          (set-Record-IntComp! NextRecord (Proc7 (Record-IntComp NextRecord) 10))
+        )
+        (set! PtrParIn (copy-Record NextRecord))
+      )
+      (set-Record-PtrComp! NextRecord '())
+      PtrParIn
+    )
   )
 )
 
-(define main
-  (lambda (loops)
-    (let ((result (pystones loops)))
-      (display (string-append
-        "Pystone.scm(" __version__ ") time for "
-        (number->string loops) " passes = " (number->string (car result)) "\n"
-        "This machine benchmarks at " (number->string (cdr result)) " pystones/second\n"
-      ))
+(define Proc2
+  (lambda (IntParIO)
+    (let ((IntLoc (+ IntParIO 10)) (EnumLoc 0))
+      (let loop ()
+        (if (char=? Char1Glob #\A)
+          (begin
+            (set! IntLoc (- IntLoc 1))
+            (set! IntParIO (- IntLoc IntGlob))
+            (set! EnumLoc Ident1)
+          )
+        )
+        (if (not (= EnumLoc Ident1))
+          (loop)
+        )
+      )
+      IntParIO
+    )
+  )
+)
+
+(define Proc3
+  (lambda (PtrParOut)
+    (if (not (eq? PtrGlb '()))
+      (set! PtrParOut (Record-PtrComp PtrGlb))
+      (set! IntGlob 100)
+    )
+    (set-Record-IntComp! PtrGlb (Proc7 10 IntGlob))
+    PtrParOut
+  )
+)
+
+(define Proc4
+  (lambda ()
+    (let ((BoolLoc (char=? Char1Glob #\A)))
+      (set! BoolLoc (or BoolLoc BoolGlob))
+      (set! Char2Glob #\B)
+    )
+  )
+)
+
+(define Proc5
+  (lambda ()
+    (set! Char1Glob #\A)
+    (set! BoolGlob #f)
+  )
+)
+
+
+(define Proc6
+  (lambda (EnumParIn)
+    (let ((EnumParOut EnumParIn))
+      (if (not (Func3 EnumParIn))
+        (set! EnumParOut Ident4)
+      )
+      (cond
+        ((= EnumParIn Ident1) (set! EnumParOut Ident1))
+        ((= EnumParIn Ident2) (if (> IntGlob 100) (set! EnumParOut Ident1) (set! EnumParOut Ident4)))
+        ((= EnumParIn Ident3) (set! EnumParOut Ident2))
+        ((= EnumParIn Ident4) '())
+        ((= EnumParIn Ident5) (set! EnumParOut Ident3))
+      )
+      EnumParOut
+    )
+  )
+)
+
+(define Proc7
+  (lambda (IntParI1 IntParI2)
+    (let ((IntLoc (+ IntParI1 2)) (IntParOut))
+      (set! IntParOut (+ IntParI2 IntLoc))
+      IntParOut
+    )
+  )
+)
+
+(define Proc8
+  (lambda (Array1Par Array2Par IntParI1 IntParI2)
+    (let ((IntLoc (+ IntParI1 5)))
+      (vector-set! Array1Par IntLoc IntParI2)
+      (vector-set! Array1Par (+ IntLoc 1) (vector-ref Array1Par IntLoc))
+      (vector-set! Array1Par (+ IntLoc 30) IntLoc)
+      (let loop ((IntIndex IntLoc))
+        (if (< IntIndex (+ IntLoc 2))
+          (begin
+            (vector-set! (vector-ref Array2Par IntLoc) IntIndex IntLoc)
+            (loop (+ IntIndex 1))
+          )
+        )
+      )
+      (vector-set! (vector-ref Array2Par IntLoc) (- IntLoc 1) (+ (vector-ref (vector-ref Array2Par IntLoc) (- IntLoc 1)) 1))
+      (vector-set! (vector-ref Array2Par (+ IntLoc 20)) IntLoc (vector-ref Array1Par IntLoc))
+      (set! IntGlob 5)
     )
   )
 )
