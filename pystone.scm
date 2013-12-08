@@ -42,6 +42,29 @@
 (define PtrGlb '())
 (define PtrGlbNext '())
 
+(define Proc1
+  (lambda (PtrParIn)
+    (let ((NextRecord (copy-Record PtrParIn)))
+      (set-Record-PtrComp! PtrParIn NextRecord)
+      (set-Record-IntComp! PtrParIn 5)
+      (set-Record-IntComp! NextRecord (Record-IntComp PtrParIn))
+      (set-Record-PtrComp! NextRecord (Record-PtrComp PtrParIn))
+      (set-Record-PtrComp! NextRecord (Proc3 (Record-PtrComp NextRecord)))
+      (if (= (Record-Discr NextRecord) Ident1)
+        (begin
+          (set-Record-IntComp! NextRecord 6)
+          (set-Record-EnumComp! NextRecord (Proc6 (Record-EnumComp PtrParIn)))
+          (set-Record-PtrComp! NextRecord (Record-PtrComp PtrGlb))
+          (set-Record-IntComp! NextRecord (Proc7 (Record-IntComp NextRecord) 10))
+        )
+        (set! PtrParIn (copy-Record NextRecord))
+      )
+      (set-Record-PtrComp! NextRecord '())
+      PtrParIn
+    )
+  )
+)
+
 (define Proc7
   (lambda (IntParI1 IntParI2)
     (let ((IntLoc (+ IntParI1 2)) (IntParOut))
