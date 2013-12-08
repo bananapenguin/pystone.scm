@@ -21,6 +21,17 @@
 (define set-Record-EnumComp! (record-modifier Record 'EnumComp))
 (define set-Record-IntComp! (record-modifier Record 'IntComp))
 (define set-Record-StringComp! (record-modifier Record 'StringComp))
+(define copy-Record
+  (lambda (RecordPar)
+    (create-Record
+      (Record-PtrComp RecordPar)
+      (Record-Discr RecordPar)
+      (Record-EnumComp RecordPar)
+      (Record-IntComp RecordPar)
+      (Record-StringComp RecordPar)
+    )
+  )
+)
 
 (define IntGlob 0)
 (define BoolGlob #f)
