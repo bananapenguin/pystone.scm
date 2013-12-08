@@ -65,6 +65,26 @@
   )
 )
 
+(define Proc2
+  (lambda (IntParIO)
+    (let ((IntLoc (+ IntParIO 10)) (EnumLoc 0))
+      (let loop ()
+        (if (char=? Char1Glob #\A)
+          (begin
+            (set! IntLoc (- IntLoc 1))
+            (set! IntParIO (- IntLoc IntGlob))
+            (set! EnumLoc Ident1)
+          )
+        )
+        (if (not (= EnumLoc Ident1))
+          (loop)
+        )
+      )
+      IntParIO
+    )
+  )
+)
+
 (define Proc3
   (lambda (PtrParOut)
     (if (not (eq? PtrGlb '()))
@@ -129,13 +149,17 @@
 
 (define Proc5
   (lambda ()
-    '()
+    (set! Char1Glob #\A)
+    (set! BoolGlob #f)
   )
 )
 
 (define Proc4
   (lambda ()
-    '()
+    (let ((BoolLoc (char=? Char1Glob #\A)))
+      (set! BoolLoc (or BoolLoc BoolGlob))
+      (set! Char2Glob #\B)
+    )
   )
 )
 
@@ -194,7 +218,9 @@
             )
             (set! IntLoc3 (* IntLoc2 IntLoc1))
             (set! IntLoc2 (/ IntLoc3 IntLoc1))
+            (print "hello")
             (set! IntLoc1 (Proc2 IntLoc1))
+            (print "hello")
             (loop (- i 1))
           )
         )
